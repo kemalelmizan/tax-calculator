@@ -11,7 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/kemalelmizan/tax-calculator/controller"
+	"github.com/kemalelmizan/tax-calculator/src/controller"
 )
 
 type key int
@@ -21,23 +21,22 @@ const (
 )
 
 func main() {
-	flag.StringVar(&controller.listenAddr, "listen-addr", ":5000", "server listen address")
+	flag.StringVar(&controller.ListenAddr, "listen-addr", ":5000", "server listen address")
 	flag.Parse()
 
 	logger := log.New(os.Stdout, "http: ", log.LstdFlags)
 	logger.Println("Server is starting...")
 
 	router := http.NewServeMux()
-	router.Handle("/", index())
-	router.Handle("/ping", ping())
-	router.Handle("/sink", sink())
+	router.Handle("/", controller.Index())
+	router.Handle("/ping", controller.Ping())
 
 	nextRequestID := func() string {
 		return fmt.Sprintf("%d", time.Now().UnixNano())
 	}
 
 	server := &http.Server{
-		Addr:         listenAddr,
+		Addr:         controller.ListenAddr,
 		Handler:      tracing(nextRequestID)(logging(logger)(router)),
 		ErrorLog:     logger,
 		ReadTimeout:  5 * time.Second,
@@ -64,10 +63,10 @@ func main() {
 		close(done)
 	}()
 
-	logger.Println("Server is ready to handle requests at", listenAddr)
-	atomic.StoreInt32(&healthy, 1)
+	logger.Println("Server is ready to handle requests at", controller.ListenAddr)
+	atomic.StoreInt32(&controller.Healthy, 1)
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		logger.Fatalf("Could not listen on %s: %v\n", listenAddr, err)
+		logger.Fatalf("Could not listen on %s: %v\n", controller.ListenAddr, err)
 	}
 
 	<-done
@@ -78,11 +77,11 @@ func logging(logger *log.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			defer func() {
-				// requestID, ok := r.Context().Value(requestIDKey).(string)
-				// if !ok {
-				// 	requestID = "unknown"
-				// }
-				// logger.Println(requestID, r.Method, r.URL.Path, r.RemoteAddr, r.UserAgent())
+				requestID, ok := r.Context().Value(requestIDKey).(string)
+				if !ok {
+					requestID = "unknown"
+				}
+				logger.Println(requestID, r.Method, r.URL.Path, r.RemoteAddr, r.UserAgent())
 			}()
 			next.ServeHTTP(w, r)
 		})

@@ -12,7 +12,8 @@ type ResponseStruct struct {
 	Data    interface{} `json:"data"`
 }
 
-func index() http.Handler {
+// Index ...
+func Index() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
 			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
@@ -32,7 +33,8 @@ func index() http.Handler {
 	})
 }
 
-func ping() http.Handler {
+// Ping ...
+func Ping() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if atomic.LoadInt32(&Healthy) == 1 {
 
