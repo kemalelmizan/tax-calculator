@@ -6,8 +6,8 @@ import (
 	"sync/atomic"
 )
 
-// ResponseStruct ...
-type ResponseStruct struct {
+// Response ...
+type Response struct {
 	Success bool        `json:"success"`
 	Data    interface{} `json:"data"`
 }
@@ -20,7 +20,7 @@ func Index() http.Handler {
 			return
 		}
 
-		root := ResponseStruct{
+		root := Response{
 			Success: true,
 			Data:    "Hello, World!",
 		}
@@ -38,7 +38,7 @@ func Ping() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if atomic.LoadInt32(&Healthy) == 1 {
 
-			pong := ResponseStruct{
+			pong := Response{
 				Success: true,
 				Data:    "pong",
 			}

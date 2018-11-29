@@ -21,6 +21,24 @@ const (
 )
 
 func main() {
+
+	args := os.Args[1:]
+	if len(args) == 0 {
+		panic("no CLI args specified")
+	}
+
+	switch args[0] {
+	case "migrate":
+		controller.Migrate()
+	case "start":
+		serve()
+	default:
+		panic("invalid CLI args")
+	}
+}
+
+func serve() {
+
 	flag.StringVar(&controller.ListenAddr, "listen-addr", ":5000", "server listen address")
 	flag.Parse()
 
