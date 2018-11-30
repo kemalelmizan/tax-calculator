@@ -5,6 +5,6 @@ COPY . .
 
 RUN go get -d -v ./...
 RUN go build -o build/tax-calculator ./src
-RUN ./build/tax-calculator migrate
+# RUN ./build/tax-calculator migrate
 
 CMD ["./build/tax-calculator", "start"]

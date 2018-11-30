@@ -1,11 +1,20 @@
 version: "3"
 
 services:
-  # db:
-  #   image: "postgres:alpine"
-  #   ports:
-  #     - "5432:5432"
+  db:
+    image: "postgres:alpine"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dummypassword
+      - POSTGRES_DB=tax_calculator
   app:
     build: "."
     ports:
       - "5000:5000"
+    depends_on:
+      - db
+    command: >
+      bash -c "./build/tax-calculator migrate &&
+              ./build/tax-calculator start"
