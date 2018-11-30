@@ -3,6 +3,7 @@ package controller
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	"github.com/golang-migrate/migrate"
 	"github.com/golang-migrate/migrate/database/postgres"
@@ -20,7 +21,7 @@ func Migrate() {
 	db, err := sql.Open("postgres", ConnectionURL("postgres", "dummypassword", "tax_calculator", "localhost", 5432))
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	m, err := migrate.NewWithDatabaseInstance(
-		"file:///./src/migrations",
+		os.Getenv("migrations_dir"),
 		"postgres", driver)
 	if err != nil {
 		panic(err)
