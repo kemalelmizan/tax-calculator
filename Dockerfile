@@ -11,7 +11,7 @@ ENV db_username=postgres
 ENV db_password=dummypassword
 ENV db_name=tax_calculator
 ENV db_host=localhost
-ENV db_post=5432
+ENV db_port=5432
 
 
 CMD ["./build/tax-calculator", "start"]
