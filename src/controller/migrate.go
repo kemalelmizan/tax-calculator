@@ -20,7 +20,7 @@ func Migrate() {
 	db, err := sql.Open("postgres", ConnectionURL("postgres", "dummypassword", "tax_calculator", "localhost", 5432))
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	m, err := migrate.NewWithDatabaseInstance(
-		"file:///migrations",
+		"file:///../migrations",
 		"postgres", driver)
 	if err != nil {
 		panic(err)
