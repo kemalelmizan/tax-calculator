@@ -10,7 +10,7 @@ ENV migrations_dir=file:///go/src/tax-calculator/migrations/
 ENV db_username=postgres
 ENV db_password=dummypassword
 ENV db_name=tax_calculator
-ENV db_host=localhost
+ENV db_host=db
 ENV db_port=5432
 
 

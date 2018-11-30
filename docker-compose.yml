@@ -9,6 +9,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=dummypassword
       - POSTGRES_DB=tax_calculator
+    networks:
+      - backend
   app:
     build: "."
     ports:
@@ -18,3 +20,9 @@ services:
     command: >
       bash -c "./build/tax-calculator migrate &&
               ./build/tax-calculator start"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

@@ -23,9 +23,12 @@ func Migrate() {
 	port, _ := strconv.Atoi(os.Getenv("db_port"))
 	m, err := migrate.New(os.Getenv("migrations_dir"), ConnectionURL(os.Getenv("db_username"), os.Getenv("db_password"), os.Getenv("db_name"), os.Getenv("db_host"), port))
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
-	m.Run()
+	err = m.Up()
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Println("Migration successful.")
 }
