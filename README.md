@@ -7,8 +7,8 @@ docker-compose up
 ```
 
 ## API Documentation
-- (Documentation)[http://htmlpreview.github.io/?https://raw.githubusercontent.com/kemalelmizan/tax-calculator/master/docs/tax-calculator.html]
-- (API Blueprint)[docs/tax-calculator.apib]
+- [Documentation](http://htmlpreview.github.io/?https://raw.githubusercontent.com/kemalelmizan/tax-calculator/master/docs/tax-calculator.html)
+- [API Blueprint](docs/tax-calculator.apib)
 
 ## Notes
 
