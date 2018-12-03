@@ -44,6 +44,7 @@ func serve() {
 	if err != nil {
 		panic(err)
 	}
+	defer db.Close()
 
 	flag.StringVar(&controller.ListenAddr, "listen-addr", ":3000", "server listen address")
 	flag.Parse()
@@ -55,6 +56,7 @@ func serve() {
 	router.Handle("/", controller.Index())
 	router.Handle("/ping", controller.Ping())
 	router.Handle("/bill", controller.PostBill(db, logger))
+	// TODO: Add products endpoint
 
 	nextRequestID := func() string {
 		return fmt.Sprintf("%d", time.Now().UnixNano())
