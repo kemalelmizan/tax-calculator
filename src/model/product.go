@@ -40,7 +40,7 @@ RETURNING id`,
 			pm.logger.Println(err)
 			continue
 		}
-		pm.logger.Println("inserted to DB: ", id)
+		pm.logger.Println("New product inserted to DB:", id)
 	}
 
 	return nil
