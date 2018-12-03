@@ -39,7 +39,7 @@ func main() {
 
 func serve() {
 
-	flag.StringVar(&controller.ListenAddr, "listen-addr", ":5000", "server listen address")
+	flag.StringVar(&controller.ListenAddr, "listen-addr", ":3000", "server listen address")
 	flag.Parse()
 
 	logger := log.New(os.Stdout, "http: ", log.LstdFlags)
@@ -48,6 +48,7 @@ func serve() {
 	router := http.NewServeMux()
 	router.Handle("/", controller.Index())
 	router.Handle("/ping", controller.Ping())
+	router.Handle("/bill", controller.PostBill())
 
 	nextRequestID := func() string {
 		return fmt.Sprintf("%d", time.Now().UnixNano())

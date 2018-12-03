@@ -1,0 +1,82 @@
+# Tax Calculator
+
+A simple API to calculate your taxes.
+
+## POST /bill
+Input your products, get your bill.
+
++ Request (application/json)
+
+        {
+            "data": [
+                {
+                    "name": "Lucky Strike",
+                    "tax_code": 2,
+                    "price": 110000
+                },
+                {
+                    "name": "Big Mac",
+                    "tax_code": 1,
+                    "price": 102000
+                },
+                {
+                    "name": "Movie",
+                    "tax_code": 3,
+                    "price": 15050
+                }
+            ]
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "success": true,
+                "data": {
+                    "products": [
+                        {
+                            "name": "Lucky Strike",
+                            "tax_code": 2,
+                            "type": "Tobacco",
+                            "refundable": "no",
+                            "price": "110000.00",
+                            "tax": "2210.00",
+                            "amount": "112210.00"
+                        },
+                        {
+                            "name": "Big Mac",
+                            "tax_code": 1,
+                            "type": "Food & Beverage",
+                            "refundable": "yes",
+                            "price": "102000.00",
+                            "tax": "10200.00",
+                            "amount": "112200.00"
+                        },
+                        {
+                            "name": "Movie",
+                            "tax_code": 3,
+                            "type": "Entertainment",
+                            "refundable": "no",
+                            "price": "15050.00",
+                            "tax": "149.50",
+                            "amount": "15199.50"
+                        }
+                    ],
+                    "total": "239609.50"
+                },
+                "error_message": ""
+            }
+
+
+## GET /ping
+For API health check.
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "success": true,
+                "data": "pong"
+            }
