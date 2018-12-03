@@ -1,6 +1,10 @@
 package controller
 
-import "strconv"
+import (
+	"strconv"
+
+	"github.com/kemalelmizan/tax-calculator/src/model"
+)
 
 // ProductInput ...
 type ProductInput struct {
@@ -26,10 +30,21 @@ type BillOutput struct {
 	Total    string    `json:"total"`
 }
 
+type productController struct {
+	model model.ProductModel
+}
+
+// ProductController is interface of productModel.
+//go:generate mockery -name=ProductModel
+type ProductController interface {
+	PostProduct([]ProductInput) (BillOutput, error)
+}
+
 // PostProduct ...
-func PostProduct(inputs []ProductInput) BillOutput {
+func (pc productController) PostProduct(inputs []ProductInput) (BillOutput, error) {
 	var bill BillOutput
 	var total float64
+	var productsModel []model.Product
 
 	for _, input := range inputs {
 		price := float64(input.Price)
@@ -62,11 +77,28 @@ func PostProduct(inputs []ProductInput) BillOutput {
 			Amount: strconv.FormatFloat(amount, 'f', 2, 64),
 		}
 
+		productModel := model.Product{
+			Name:    input.Name,
+			Price:   int64(input.Price),
+			TaxCode: input.TaxCode,
+		}
+
+		productsModel = append(productsModel, productModel)
 		bill.Products = append(bill.Products, product)
 	}
 	bill.Total = strconv.FormatFloat(total, 'f', 2, 64)
 
-	// TODO: save to db
+	err := pc.model.InsertProducts(productsModel)
+	if err != nil {
+		return BillOutput{}, err
+	}
 
-	return bill
+	return bill, nil
+}
+
+// NewProductController is function creates a new instance of ProductModel
+func NewProductController(model model.ProductModel) ProductController {
+	return productController{
+		model: model,
+	}
 }

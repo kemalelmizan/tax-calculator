@@ -1,10 +1,14 @@
 package controller
 
 import (
+	"database/sql"
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"sync/atomic"
+
+	"github.com/kemalelmizan/tax-calculator/src/model"
 )
 
 // Response ...
@@ -15,7 +19,7 @@ type Response struct {
 }
 
 // PostBill ...
-func PostBill() http.Handler {
+func PostBill(db *sql.DB, log *log.Logger) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		if r.Method != "POST" {
@@ -37,9 +41,18 @@ func PostBill() http.Handler {
 			panic(err)
 		}
 
+		// TODO: pass DB and logger from main
+		pm := model.NewProductModel(db, log)
+		pc := NewProductController(pm)
+
+		billOutput, err := pc.PostProduct(productInputWrapper.Data)
+		if err != nil {
+			panic(err)
+		}
+
 		root := Response{
 			Success: true,
-			Data:    PostProduct(productInputWrapper.Data),
+			Data:    billOutput,
 		}
 
 		w.Header().Set("Content-Type", "application/json")

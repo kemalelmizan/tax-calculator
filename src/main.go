@@ -40,6 +40,11 @@ func main() {
 
 func serve() {
 
+	db, err := model.InitDB()
+	if err != nil {
+		panic(err)
+	}
+
 	flag.StringVar(&controller.ListenAddr, "listen-addr", ":3000", "server listen address")
 	flag.Parse()
 
@@ -49,7 +54,7 @@ func serve() {
 	router := http.NewServeMux()
 	router.Handle("/", controller.Index())
 	router.Handle("/ping", controller.Ping())
-	router.Handle("/bill", controller.PostBill())
+	router.Handle("/bill", controller.PostBill(db, logger))
 
 	nextRequestID := func() string {
 		return fmt.Sprintf("%d", time.Now().UnixNano())

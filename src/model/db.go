@@ -25,7 +25,8 @@ func dbEnv() (username, password, dbname, host string, port int, connectionURL s
 	return username, password, dbname, host, port, connectionURL
 }
 
-func initDB() (*sql.DB, error) {
+// InitDB ...
+func InitDB() (*sql.DB, error) {
 	username, password, dbname, host, port, _ := dbEnv()
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+

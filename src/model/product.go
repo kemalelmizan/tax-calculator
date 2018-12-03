@@ -12,23 +12,23 @@ type Product struct {
 	Price   int64  `db:"price"`
 }
 
-type model struct {
+type productModel struct {
 	db     *sql.DB
 	logger *log.Logger
 }
 
-// Model is interface of model.
-//go:generate mockery -name=Model
-type Model interface {
+// ProductModel is interface of productModel.
+//go:generate mockery -name=ProductModel
+type ProductModel interface {
 	InsertProducts([]Product) error
 }
 
 // InsertProducts ...
-func (m model) InsertProducts(products []Product) (err error) {
+func (pm productModel) InsertProducts(products []Product) (err error) {
 	var id int64
 
 	for _, product := range products {
-		err = m.db.QueryRow(`
+		err = pm.db.QueryRow(`
 INSERT INTO products (name, tax_code, price)
 VALUES ($1, $2, $3)
 RETURNING id`,
@@ -37,23 +37,19 @@ RETURNING id`,
 			product.Price,
 		).Scan(&id)
 		if err != nil {
-			return err
+			pm.logger.Println(err)
+			continue
 		}
-		m.logger.Println("inserted to DB: ", id)
+		pm.logger.Println("inserted to DB: ", id)
 	}
 
 	return nil
 }
 
-// NewModel is function creates a new instance of Model
-func NewModel() Model {
-	db, err := initDB()
-	if err != nil {
-		panic(err)
-	}
-
-	return model{
+// NewProductModel is function creates a new instance of ProductModel
+func NewProductModel(db *sql.DB, logger *log.Logger) ProductModel {
+	return productModel{
 		db:     db,
-		logger: nil,
+		logger: logger,
 	}
 }
