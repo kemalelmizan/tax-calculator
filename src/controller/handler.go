@@ -17,6 +17,12 @@ type Response struct {
 // PostBill ...
 func PostBill() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		if r.Method != "POST" {
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+			return
+		}
+
 		type ProductInputWrapper struct {
 			Data []ProductInput `json:"data"`
 		}
@@ -45,25 +51,20 @@ func PostBill() http.Handler {
 // Index ...
 func Index() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/" {
-			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-			return
-		}
-
-		root := Response{
-			Success: true,
-			Data:    "Welcome to Tax Calculator!",
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(root)
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		return
 	})
 }
 
 // Ping ...
 func Ping() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		if r.Method != "GET" {
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+			return
+		}
+
 		if atomic.LoadInt32(&Healthy) == 1 {
 
 			pong := Response{

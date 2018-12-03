@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/kemalelmizan/tax-calculator/src/controller"
+	"github.com/kemalelmizan/tax-calculator/src/model"
 )
 
 type key int
@@ -29,7 +30,7 @@ func main() {
 
 	switch args[0] {
 	case "migrate":
-		controller.Migrate()
+		model.Migrate()
 	case "start":
 		serve()
 	default:
