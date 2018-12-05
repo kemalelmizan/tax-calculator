@@ -6,36 +6,11 @@
 docker-compose up
 ```
 
-## API Documentation
-- [Documentation](http://htmlpreview.github.io/?https://raw.githubusercontent.com/kemalelmizan/tax-calculator/master/docs/tax-calculator.html)
+## Documentations
+- [API Documentation](http://htmlpreview.github.io/?https://raw.githubusercontent.com/kemalelmizan/tax-calculator/master/docs/tax-calculator.html)
 - [API Blueprint](docs/tax-calculator.apib)
-
-### cURL Example
-
-```
-curl -X POST \
-  http://localhost:3000/bill \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "data": [
-        {
-            "name": "Lucky Strike",
-            "tax_code": 2,
-            "price": 110000
-        },
-        {
-            "name": "Big Mac",
-            "tax_code": 1,
-            "price": 102000
-        },
-        {
-            "name": "Movie",
-            "tax_code": 3,
-            "price": 15050
-        }
-    ]
-}'
-```
+- [Test Coverage]()
+- [Database Design]()
 
 ## Notes
 

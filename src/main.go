@@ -55,8 +55,8 @@ func serve() {
 	router := http.NewServeMux()
 	router.Handle("/", controller.Index())
 	router.Handle("/ping", controller.Ping())
-	router.Handle("/bill", controller.PostBill(db, logger))
-	// TODO: Add products endpoint
+	router.Handle("/bill", controller.GetBill(db, logger))
+	router.Handle("/products", controller.PostProducts(db, logger))
 
 	nextRequestID := func() string {
 		return fmt.Sprintf("%d", time.Now().UnixNano())

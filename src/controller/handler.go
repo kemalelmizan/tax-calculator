@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"sync/atomic"
 
 	"github.com/kemalelmizan/tax-calculator/src/model"
@@ -18,8 +19,42 @@ type Response struct {
 	ErrorMessage string      `json:"error_message"`
 }
 
-// PostBill ...
-func PostBill(db *sql.DB, log *log.Logger) http.Handler {
+// GetBill ...
+func GetBill(db *sql.DB, log *log.Logger) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		if r.Method != "GET" {
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+			return
+		}
+
+		q := r.URL.Query()
+		productNames := strings.Split(q.Get("products"), ",")
+
+		pm := model.NewProductModel(db, log)
+		bc := NewBillController(pm)
+
+		billOutput, err := bc.GetBill(productNames)
+		root := Response{
+			Success: true,
+			Data:    billOutput,
+		}
+		if err != nil {
+			root = Response{
+				Success:      false,
+				Data:         nil,
+				ErrorMessage: err.Error(),
+			}
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(root)
+	})
+}
+
+// PostProducts ...
+func PostProducts(db *sql.DB, log *log.Logger) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		if r.Method != "POST" {
@@ -41,18 +76,17 @@ func PostBill(db *sql.DB, log *log.Logger) http.Handler {
 			panic(err)
 		}
 
-		// TODO: pass DB and logger from main
 		pm := model.NewProductModel(db, log)
 		pc := NewProductController(pm)
 
-		billOutput, err := pc.PostProduct(productInputWrapper.Data)
+		err = pc.PostProduct(productInputWrapper.Data)
 		if err != nil {
 			panic(err)
 		}
 
 		root := Response{
 			Success: true,
-			Data:    billOutput,
+			Data:    nil,
 		}
 
 		w.Header().Set("Content-Type", "application/json")

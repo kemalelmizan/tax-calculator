@@ -1,9 +1,45 @@
+FORMAT: 1A
+HOST: https://api.example.com
+
 # Tax Calculator
 
 A simple API to calculate your taxes.
 
-## POST /bill
-Input your products, get your bill.
+## POST /products
+Input your products
+
+Request Body | Data Type | Mandatory
+--- | --- | ---
+data | array of products  | true
+name | string  | true
+tax_code | int  | true
+price | float64  | true
+
+cURL example: 
+```
+curl -X POST \
+  http://localhost:3000/products \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "data": [
+        {
+            "name": "Lucky Strike",
+            "tax_code": 2,
+            "price": 110000
+        },
+        {
+            "name": "Big Mac",
+            "tax_code": 1,
+            "price": 102000
+        },
+        {
+            "name": "Movie",
+            "tax_code": 3,
+            "price": 15050
+        }
+    ]
+}'
+```
 
 + Request (application/json)
 
@@ -33,6 +69,28 @@ Input your products, get your bill.
 
             {
                 "success": true,
+                "data": null,
+                "error_message": ""
+            }
+
+## GET /bill?products=a,b,c
+Get your bill. Make sure the products exists in DB first.
+
+Request Parameter | Data Type | Mandatory
+--- | --- | ---
+products | array of string  | true
+
+cURL example: 
+```
+curl -X GET 'http://localhost:3000/bill?products=Lucky%20Strike,%20Movie,%20big%20mac%20'
+```
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "success": true,
                 "data": {
                     "products": [
                         {
@@ -40,34 +98,33 @@ Input your products, get your bill.
                             "tax_code": 2,
                             "type": "Tobacco",
                             "refundable": "no",
-                            "price": "110000.00",
-                            "tax": "2210.00",
-                            "amount": "112210.00"
+                            "price": "1100.00",
+                            "tax": "32.00",
+                            "amount": "1132.00"
                         },
                         {
                             "name": "Big Mac",
                             "tax_code": 1,
                             "type": "Food & Beverage",
                             "refundable": "yes",
-                            "price": "102000.00",
-                            "tax": "10200.00",
-                            "amount": "112200.00"
+                            "price": "1020.00",
+                            "tax": "102.00",
+                            "amount": "1122.00"
                         },
                         {
                             "name": "Movie",
                             "tax_code": 3,
                             "type": "Entertainment",
                             "refundable": "no",
-                            "price": "15050.00",
-                            "tax": "149.50",
-                            "amount": "15199.50"
+                            "price": "150.50",
+                            "tax": "0.51",
+                            "amount": "151.00"
                         }
                     ],
-                    "total": "239609.50"
+                    "total": "2405.01"
                 },
                 "error_message": ""
             }
-
 
 ## GET /ping
 For API health check.
