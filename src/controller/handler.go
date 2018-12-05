@@ -80,13 +80,16 @@ func PostProducts(db *sql.DB, log *log.Logger) http.Handler {
 		pc := NewProductController(pm)
 
 		err = pc.PostProduct(productInputWrapper.Data)
-		if err != nil {
-			panic(err)
-		}
-
 		root := Response{
 			Success: true,
 			Data:    nil,
+		}
+		if err != nil {
+			root = Response{
+				Success:      false,
+				Data:         nil,
+				ErrorMessage: err.Error(),
+			}
 		}
 
 		w.Header().Set("Content-Type", "application/json")
