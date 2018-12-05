@@ -45,7 +45,7 @@ func (pm productModel) SelectProductsFromNames(productNames []string) (products 
 		}
 	}
 
-	pm.logger.Println("Incoming query: ", qs, productNamesInterface)
+	pm.logger.Println("Incoming query:", qs, productNamesInterface)
 
 	rows, err := pm.db.Query(qs, productNamesInterface...)
 	if err != nil {
