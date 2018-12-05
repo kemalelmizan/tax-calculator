@@ -6,10 +6,10 @@
 docker-compose up
 ```
 
-## Documentations
+## Docs
 - [API Documentation](http://htmlpreview.github.io/?https://raw.githubusercontent.com/kemalelmizan/tax-calculator/master/docs/tax-calculator.html)
 - [API Blueprint](docs/tax-calculator.apib)
-- [Test Coverage]()
+- [Test Coverage](http://htmlpreview.github.io/?https://raw.githubusercontent.com/kemalelmizan/tax-calculator/master/docs/coverage.html)
 - [Database Design]()
 
 ## Notes
