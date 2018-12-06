@@ -1,5 +1,5 @@
 # tax-calculator
-[![Coverage Status](https://img.shields.io/badge/Coverage-90.15%25-brightgreen.svg)](http://htmlpreview.github.io/?https://raw.githubusercontent.com/kemalelmizan/tax-calculator/master/docs/coverage.html)
+[![Coverage Status](https://img.shields.io/badge/coverage-90.15%25-brightgreen.svg)](http://htmlpreview.github.io/?https://raw.githubusercontent.com/kemalelmizan/tax-calculator/master/docs/coverage.html)
 
 ## Running build
 
