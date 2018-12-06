@@ -50,7 +50,7 @@ func Migrate() {
 	}
 	err = m.Up()
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	fmt.Println("Migration successful.")
