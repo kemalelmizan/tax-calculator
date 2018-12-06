@@ -39,16 +39,17 @@ func GetBill(db *sql.DB, log *log.Logger) http.Handler {
 			Success: true,
 			Data:    billOutput,
 		}
+		status := http.StatusOK
 		if err != nil {
+			status = http.StatusInternalServerError
 			root = Response{
 				Success:      false,
 				Data:         nil,
 				ErrorMessage: err.Error(),
 			}
 		}
-
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(status)
 		json.NewEncoder(w).Encode(root)
 	})
 }
@@ -84,7 +85,9 @@ func PostProducts(db *sql.DB, log *log.Logger) http.Handler {
 			Success: true,
 			Data:    nil,
 		}
+		status := http.StatusOK
 		if err != nil {
+			status = http.StatusInternalServerError
 			root = Response{
 				Success:      false,
 				Data:         nil,
@@ -93,7 +96,7 @@ func PostProducts(db *sql.DB, log *log.Logger) http.Handler {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(status)
 		json.NewEncoder(w).Encode(root)
 	})
 }

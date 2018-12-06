@@ -27,7 +27,7 @@ type productController struct {
 }
 
 // ProductController is interface of productModel.
-//go:generate mockery -name=ProductModel
+//go:generate mockery -name=ProductController
 type ProductController interface {
 	PostProduct([]ProductInput) error
 }
