@@ -16,6 +16,6 @@ docker-compose up
 ## Notes
 
 - API response is following [JSend](https://labs.omniti.com/labs/jsend) spec
-- Stored price as `int8`, to tackle [floating points math](http://0.30000000000000004.com/) problem
-- `ProductInput.Price` is still `float64`
+- stored price as `int8`, to tackle [floating points math](http://0.30000000000000004.com/) problem, while `ProductInput.Price` is still `float64`
 - using [mockery](https://github.com/vektra/mockery) to generate mocks
+- manually tested in macOS 10.14.1 and Debian 9.6
